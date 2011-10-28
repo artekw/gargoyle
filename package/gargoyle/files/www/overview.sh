@@ -1,6 +1,6 @@
 #!/usr/bin/haserl
 <?
-	# This program is copyright © 2008 Eric Bishop and is distributed under the terms of the GNU GPL 
+	# This program is copyright © 2008-2011 Eric Bishop and is distributed under the terms of the GNU GPL 
 	# version 2.0 with a special clarification/exception that permits adapting the program to 
 	# configure proprietary "back end" software provided that all modifications to the web interface
 	# itself remain covered by the GPL. 
@@ -13,6 +13,7 @@
 <script>
 <!--
 <?
+
 	uptime=$(cat /proc/uptime)
 	echo "uptime = \"$uptime\";"
 
@@ -39,15 +40,18 @@
 	fi
 	echo "var currentTime = \"$current_time\";"
 
-	total_mem=$(cat /proc/meminfo | grep "MemTotal:" | awk ' { print $2 } ')
-	free_mem=$(cat /proc/meminfo | grep "MemFree:" | awk ' { print $2 } ')
+	total_mem="$(sed -e '/^MemTotal: /!d; s#MemTotal: *##; s# kB##g' /proc/meminfo)"
+	buffers_mem="$(sed -e '/^Buffers: /!d; s#Buffers: *##; s# kB##g' /proc/meminfo)"
+	cached_mem="$(sed -e '/^Cached: /!d; s#Cached: *##; s# kB##g' /proc/meminfo)"
+	free_mem="$(sed -e '/^MemFree: /!d; s#MemFree: *##; s# kB##g' /proc/meminfo)"
+	free_mem="$(( ${free_mem} + ${buffers_mem} + ${cached_mem} ))"
 	echo "var totalMemory=$total_mem;"
 	echo "var freeMemory=$free_mem;"
 	
-	load_avg=$(cat /proc/loadavg | awk '{print $1 " / " $2 " / " $3}')
+	load_avg="$(awk '{print $1 " / " $2 " / " $3}' /proc/loadavg)"
 	echo "var loadAvg=\"$load_avg\";"
 
-	curconn=$(cat /proc/net/ip_conntrack | wc -l)
+	curconn="$(wc -l < /proc/net/ip_conntrack)"
 	maxconn=$(cat /proc/sys/net/ipv4/ip_conntrack_max 2>/dev/null)
 	if [ -z "$maxconn" ] ; then
 		maxconn=$(cat /proc/sys/net/ipv4/netfilter/ip_conntrack_max 2>/dev/null )
@@ -59,7 +63,7 @@
 	echo "var maxConn=\"$maxconn\";"
 
 
-	echo "var wanDns=\""$(cat /tmp/resolv.conf.auto | grep nameserver | sed 's/nameserver //g')"\";"
+	echo "var wanDns=\""$(sed -e '/nameserver/!d; s#nameserver ##g' /tmp/resolv.conf.auto)"\";"
 
 ?>
 //-->
@@ -177,6 +181,9 @@
 		</div>
 		<div id="wireless_apssid_div">
 			<span class='leftcolumn' id="wireless_apssid_label">Access Point SSID:</span><span id="wireless_apssid" class='rightcolumn'></span>
+		</div>
+		<div id="wireless_apssid_5ghz_div">
+			<span class='leftcolumn' id="wireless_apssid_5ghz_label">5GHz Access Point SSID:</span><span id="wireless_apssid_5ghz" class='rightcolumn'></span>
 		</div>
 		<div id="wireless_otherssid_div">
 			<span class='leftcolumn' id="wireless_otherssid_label">SSID Joined By Client:</span><span id="wireless_otherssid" class='rightcolumn'></span>
