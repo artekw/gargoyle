@@ -163,7 +163,20 @@ fi
 if [ ! -d "downloaded" ] ; then
 	mkdir "downloaded"
 fi
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+
+# set svn revision number to use 
+# you can set this to an alternate revision 
+# or empty to checkout latest 
+branch_name="backfire"
+rnum=28106
+
+=======
+>>>>>>> upstream/master
+>>>>>>> a90623bf7d69aacfe42698824a4b297b67b6a788
 openwrt_src_dir="$top_dir/downloaded/$branch_name-$rnum"
 
 #download openwrt source if we haven't already

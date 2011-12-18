@@ -371,6 +371,7 @@ function saveChanges()
 			
 			
 			ppoeReconnectIds = ['wan_pppoe_reconnect_pings', 'wan_pppoe_interval'];
+<<<<<<< HEAD
 			wifiSsidId = wifiGSelected ? "wifi_ssid1" : "wifi_ssid1a";
 			inputIds = ['wan_protocol', 'wan_pppoe_user', 'wan_pppoe_pass', 'wan_pppoe_max_idle', ppoeReconnectIds, 'wan_static_ip', 'wan_static_mask', 'wan_static_gateway', 'wan_mac', 'wan_mtu', 'lan_ip', 'lan_mask', 'lan_gateway', wifiSsidId, 'wifi_hidden', 'wifi_isolate', 'wifi_encryption1', 'wifi_pass1', 'wifi_wep1' , 'wifi_server1', 'wifi_port1', 'wifi_pass2', 'wifi_wep2', 'wan_3g_device', 'wan_3g_user', 'wan_3g_pass', 'wan_3g_apn', 'wan_3g_pincode', 'wan_3g_service', 'wan_3g_isp'];
 			
@@ -866,7 +867,11 @@ function proofreadAll()
 	var errors = [];
 	if(document.getElementById("global_gateway").checked)
 	{
+<<<<<<< HEAD
 		var inputIds = ['wan_pppoe_user', 'wan_pppoe_pass', 'wan_pppoe_max_idle', 'wan_pppoe_reconnect_pings', 'wan_pppoe_interval', 'wan_static_ip', 'wan_static_mask', 'wan_static_gateway', 'wan_mac', 'wan_mtu', 'lan_ip', 'lan_mask', 'lan_gateway', 'wifi_txpower', 'wifi_txpower_5ghz', 'wifi_ssid1', 'wifi_pass1', 'wifi_wep1', 'wifi_server1', 'wifi_port1', 'wifi_ssid2', 'wifi_pass2', 'wifi_wep2', 'wan_3g_device', 'wan_3g_apn'];
+=======
+		var inputIds = ['wan_pppoe_user', 'wan_pppoe_pass', 'wan_pppoe_max_idle', 'wan_pppoe_reconnect_pings', 'wan_pppoe_interval', 'wan_static_ip', 'wan_static_mask', 'wan_static_gateway', 'wan_mac', 'wan_mtu', 'lan_ip', 'lan_mask', 'lan_gateway', 'wifi_txpower', 'wifi_txpowera', 'wifi_ssid1', 'wifi_pass1', 'wifi_wep1', 'wifi_server1', 'wifi_port1', 'wifi_ssid2', 'wifi_pass2', 'wifi_wep2', 'wan_3g_device', 'wan_3g_apn'];
+>>>>>>> a90623bf7d69aacfe42698824a4b297b67b6a788
 	
 		var functions= [vlr1, vlr1, vn, vn, vn, vip, vnm, vip, vm, vn, vip, vnm, vip, vtp, vtpa, vlr1, vlr8, vw, vip, vn, vlr1, vlr8, vw, vlr1, vlr1];
 	
@@ -918,6 +923,20 @@ function proofreadAll()
 
 function setGlobalVisibility()
 {
+<<<<<<< HEAD
+=======
+	//deal with possibility of wireless routed WAN 
+	globalIds=['wan_via_single_port_container', 'wan_port_to_lan_container'];
+	wirelessWanVisibility       = defaultWanIf != '' ? [0,1] : [0,0];
+	defaultVisibility           = defaultWanIf != '' ? [0,0] : [1,0];
+
+	if( getSelectedValue("wan_protocol").match(/3g/) )
+	{
+		defaultVisibility  = defaultWanIf != '' ? [0,1] : [1,1];
+	}
+
+	selectedVisibility=defaultVisibility;
+>>>>>>> a90623bf7d69aacfe42698824a4b297b67b6a788
 	if( getSelectedValue("wan_protocol").match(/wireless/) )
 	{
 		currentMode=getSelectedValue('wifi_mode');
@@ -947,13 +966,28 @@ function setGlobalVisibility()
 	}
 
 
+<<<<<<< HEAD
 	if (hasUSB == false) {
 		setAllowableSelections('wan_protocol', ['dhcp_wired', 'pppoe_wired', 'static_wired', 'dhcp_wireless', 'static_wireless', 'none'], ['DHCP (Wired)', 'PPPoE (Wired)', 'Static IP (Wired)', 'DHCP (Wireless)', 'Static IP (Wireless)','Disabled']);
+=======
+	if(defaultWanIf == '' && (!(getSelectedValue('wan_via_single_port')=="wan" && document.getElementById('wan_via_single_port_container').style.display != "none" )))
+	{
+		if(!getSelectedValue("wan_protocol").match(/wireless/) )
+		{
+			setSelectedValue("wan_protocol", 'none' );
+		}
+		setAllowableSelections('wan_protocol', ['dhcp_wireless', 'static_wireless', 'none'], ['DHCP (Wireless)', 'Static (Wireless)', 'Disabled']);
+>>>>>>> a90623bf7d69aacfe42698824a4b297b67b6a788
 	}
 	else
 	{
 		setAllowableSelections('wan_protocol', ['dhcp_wired', 'pppoe_wired', 'static_wired', 'dhcp_wireless', 'static_wireless', '3g', 'none'], ['DHCP (Wired)', 'PPPoE (Wired)', 'Static IP (Wired)', 'DHCP (Wireless)', 'Static IP (Wireless)', '3G (GSM)', 'Disabled']);
 	}
+<<<<<<< HEAD
+=======
+
+	setAllowableSelections('wan_protocol', ['dhcp_wired', 'pppoe_wired', 'static_wired', 'dhcp_wireless', 'static_wireless', 'none'], ['DHCP (Wired)', 'PPPoE (Wired)', 'Static IP (Wired)', 'DHCP (Wireless)', 'Static IP (Wireless)','Disabled']);
+>>>>>>> a90623bf7d69aacfe42698824a4b297b67b6a788
 	
 
 	setVisibility( [ 'wan_port_to_lan_container' ], ((getSelectedValue("wan_protocol").match(/wireless/) || getSelectedValue("wan_protocol").match(/3g/))  && (!singleEthernetPort())) ? [1] : [0] )
